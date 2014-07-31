@@ -1,7 +1,8 @@
 /*	et_nix.c
 	Author: William Woodruff
 	------------------------
-
+	The starting point for et on *nix systems.
+	Connects to the IRC C&C server, says hello, then calls et_main_loop.
 */
 
 #include "../et_main_loop.h"
