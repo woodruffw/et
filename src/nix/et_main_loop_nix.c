@@ -46,19 +46,19 @@ void et_main_loop(int socket, char *nick)
 				char version[512];
 				char machine[512];
 
-				snprintf(sysname, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :", sys_info.sysname, "\r\n");
+				snprintf(sysname, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :Kernel: ", sys_info.sysname, "\r\n");
 				send(socket, sysname, strlen(sysname), 0);
 
-				snprintf(nodename, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :", sys_info.nodename, "\r\n");
+				snprintf(nodename, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :Host: ", sys_info.nodename, "\r\n");
 				send(socket, nodename, strlen(nodename), 0);
 				
-				snprintf(release, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :", sys_info.release, "\r\n");
+				snprintf(release, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :Release: ", sys_info.release, "\r\n");
 				send(socket, release, strlen(release), 0);
 
-				snprintf(version, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :", sys_info.version, "\r\n");
+				snprintf(version, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :Version: ", sys_info.version, "\r\n");
 				send(socket, version, strlen(version), 0);
 
-				snprintf(machine, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :", sys_info.machine, "\r\n");
+				snprintf(machine, 512, "%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :Arch: ", sys_info.machine, "\r\n");
 				send(socket, machine, strlen(machine), 0);
 			}
 			else

@@ -62,6 +62,8 @@ int main(int argc, char **argv[])
 
 		send(sock, quit, strlen(quit), 0);
 		close(sock);
+
+		exit(0);
 	}
 
 	exit(0);
