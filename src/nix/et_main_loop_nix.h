@@ -1,7 +1,7 @@
-/*	et_main_loop.h
+/*	et_main_loop_nix.h
 	Author: William Woodruff
 	------------------------
-	Function prototype for the et_main_loop function.
+	Function prototype for the et_main_loop_nix function.
 */
 
-void et_main_loop(int socket, char *nick);
+void et_main_loop_nix(int socket, char *nick);

@@ -1,7 +1,7 @@
-/*	et_main_loop.c
+/*	et_main_loop_nix.c
 	Author: William Woodruff
 	------------------------
-	The primary function used by et to send/receive data.
+	The primary function used by et to send/receive data on *nix.
 */
 
 #include "../cnc_info.h"
@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <sys/utsname.h>
 
-void et_main_loop(int socket, char *nick)
+void et_main_loop_nix(int socket, char *nick)
 {
 	char buf[1024];
 

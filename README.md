@@ -46,7 +46,8 @@ The original PoC Python script can be found under `src/poc/et.py`. Like the actu
 Because the IRC protocol limits nicks to 9 characters, only so many `et`s can operate within a single channel.
 
 By default, the first two characters of an `et`'s nick will always be 'et,' meaning that at most 10 million `et`s can exist within a channel.
-Of course, because the trailing numbers are pseudorandom and not sequential, the actual point of collision is likely to be much lower than 10 million.
+Furthermore, because I got lazy with the Windows version, the ID on Windows machines can only be in the range [0, (32768 << 8)] for a total number of 8,388,609 possible IDs on Windows.
+Of course, because the trailing numbers are pseudorandom and not sequential, the actual point of collision is likely to be much lower than 10 million (or 8,388,609 for that matter).
 On the other hand, `et` can be configured to "phone home" to other servers and channels, making the limit less relevant in practice.
 
 ### Status

@@ -14,5 +14,9 @@
 void gen_nick(char* nick)
 {
 	srand(time(NULL));
-	snprintf(nick, 10, "%s%d", "et", rand() % 10000000);
+	#ifdef _WIN32
+		sprintf(nick, "et%d", rand() << 8 );
+	#else
+		snprintf(nick, 10, "et%d", rand() % 10000000);
+	#endif
 }
