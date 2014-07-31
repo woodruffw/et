@@ -9,6 +9,11 @@
 #include <stdio.h>
 #include <windows.h>
 
+/*	et_main_loop_win
+	The main loop called by et_win.c to communicate with the IRC C&C server.
+	arg: SOCKET socket, the winsock to write to/read from.
+	arg: char *nick, the string containing the IRC nickname
+*/
 void et_main_loop_win(SOCKET socket, char *nick)
 {
 	char buf[1024];

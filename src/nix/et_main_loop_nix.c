@@ -9,6 +9,11 @@
 #include <stdio.h>
 #include <sys/utsname.h>
 
+/*	et_main_loop_nix
+	The main loop called by et_nix.c to communicate with the IRC C&C server.
+	arg: int socket, the network socket to write to/read from.
+	arg: char *nick, the string containing the IRC nickname
+*/
 void et_main_loop_nix(int socket, char *nick)
 {
 	char buf[1024];

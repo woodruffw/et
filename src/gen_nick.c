@@ -11,7 +11,11 @@
 #include <string.h>
 #include <stdio.h>
 
-void gen_nick(char* nick)
+/*	gen_nick
+	generates a pseudorandom nickname.
+	arg: char *nick, a 10-character string to fill.
+*/
+void gen_nick(char *nick)
 {
 	srand(time(NULL));
 	#ifdef _WIN32
