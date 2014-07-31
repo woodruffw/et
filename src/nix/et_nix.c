@@ -40,10 +40,10 @@ int main(int argc, char **argv[])
 	connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_in));
 
 	gen_nick(nick);
-	snprintf(nick_str, 256, "%s%s%s", "NICK ", nick, "\r\n");
-	snprintf(user_str, 256, "%s%s%s", "USER ", nick, " 0 * :et phone home\r\n");
-	snprintf(join_str, 256, "%s%s%s", "JOIN :", IRC_CHANNEL, "\r\n");
-	snprintf(mesg_str, 256, "%s%s%s%s%s%s%s", "PRIVMSG ", IRC_CHANNEL, " :", nick, " ", IRC_REPORT, "\r\n");
+	snprintf(nick_str, 256, "NICK %s\r\n", nick);
+	snprintf(user_str, 256, "USER %s 0 * :et phone home\r\n", nick);
+	snprintf(join_str, 256, "JOIN :%s\r\n", IRC_CHANNEL);
+	snprintf(mesg_str, 256, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
 	char *quit = "QUIT";
 
 	send(sock, nick_str, strlen(nick_str), 0);
@@ -52,7 +52,7 @@ int main(int argc, char **argv[])
 	send(sock, mesg_str, strlen(mesg_str), 0);
 	send(sock, quit, strlen(quit), 0);
 
-	et_main_loop(sock);
+	et_main_loop(sock, nick);
 
 	close(sock);
 	return 0;

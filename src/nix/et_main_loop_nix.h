@@ -4,4 +4,4 @@
 	Function prototype for the et_main_loop function.
 */
 
-void et_main_loop(int socket);
+void et_main_loop(int socket, char *nick);
