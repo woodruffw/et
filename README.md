@@ -10,14 +10,19 @@ It can be instructed to retrieve system information and execute commands, among 
 
 ### Compilation
 
-On *nix systems (Linux, BSD, OS X):
+#### On *nix systems (Linux, BSD, OS X):
 ```bash
 $ git clone https://github.com/woodruffw/et && cd et
-$ make nix
+$ make nix # compiles et in ./bin
 ```
-Do not actually run the resulting `et` binary, as it *WILL* connect you to the default server and open your computer to attack.
 
-The Windows version is incomplete.
+#### On Windows:
+Building on Windows requries `make` and `gcc`, both of which can be obtained through the [MinGW](http://www.mingw.org/) project.
+
+Download the tarball, extract it somewhere, and run `mingw32-make` inside of that directory in CMD.exe. The `et.exe` binary will be left in "bin".
+
+
+*IMPORTANT*: Do not actually run the resulting `et` binary, as it *WILL* connect you to the default server and open your computer to attack.
 
 ### Usage
 Controlling the `et` bots from the IRC server is very simple.
