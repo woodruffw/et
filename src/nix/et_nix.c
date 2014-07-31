@@ -51,7 +51,7 @@ int main(int argc, char **argv[])
 	send(sock, mesg_str, strlen(mesg_str), 0);
 	send(sock, quit, strlen(quit), 0);
 
-	//et_main_loop(sock);
+	et_main_loop(sock);
 
 	close(sock);
 	return 0;
