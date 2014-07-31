@@ -57,10 +57,10 @@ int main(int argc, char **argv[])
 		send(sock, user_str, strlen(user_str), 0);
 		send(sock, join_str, strlen(join_str), 0);
 		send(sock, mesg_str, strlen(mesg_str), 0);
-		send(sock, quit, strlen(quit), 0);
 
 		et_main_loop(sock, nick);
 
+		send(sock, quit, strlen(quit), 0);
 		close(sock);
 	}
 
