@@ -16,12 +16,12 @@ void et_main_loop(int socket)
 		recv(socket, buf, 1023, 0);
 		buf[1024] = '\0';
 
-		char *pping;
-		if ((pping = strstr(buf, "PING")) && !(strstr(buf, "CASEMAPPING")))
+		char *ping;
+		if ((ping = strstr(buf, "PING")) && !(strstr(buf, "CASEMAPPING")))
 		{
-			strncpy(pping, "PONG", 4);
-			send(socket, pping, strlen(pping), 0);
-			printf("%s\n", pping);
+			char *pong = strtok(ping, "\r\n");
+			strncpy(pong, "PONG", 4);
+			send(socket, pong, strlen(pong), 0);
 		}
 		else if (strstr(buf, "PRIVMSG"))
 		{
