@@ -9,11 +9,10 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-const char* gen_nick(void)
+void gen_nick(char* nick)
 {
 	srand(time(NULL));
-	char nick[10];
 	snprintf(nick, 10, "%s%d", "et", rand() % 10000000);
-	return nick;
 }

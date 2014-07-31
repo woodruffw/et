@@ -4,4 +4,4 @@
 	Function prototype for the gen_nick function.
 */
 
-const char* gen_nick(void);
+void gen_nick(char *nick);

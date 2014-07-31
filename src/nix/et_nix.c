@@ -19,6 +19,7 @@
 
 int main(int argc, char **argv[])
 {
+	char nick[10];
 	char nick_str[256];
 	char user_str[256];
 	char join_str[256];
@@ -38,7 +39,7 @@ int main(int argc, char **argv[])
 
 	connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_in));
 
-	char *nick = gen_nick();
+	gen_nick(nick);
 	snprintf(nick_str, 256, "%s%s%s", "NICK ", nick, "\r\n");
 	snprintf(user_str, 256, "%s%s%s", "USER ", nick, " 0 * :et phone home\r\n");
 	snprintf(join_str, 256, "%s%s%s", "JOIN :", IRC_CHANNEL, "\r\n");
