@@ -5,7 +5,7 @@
 	Connects to the IRC C&C server, says hello, then calls et_main_loop.
 */
 
-#include "et_main_loop.h"
+#include "et_main_loop_nix.h"
 #include "../gen_nick.h"
 #include "../cnc_info.h"
 #include <stdio.h>

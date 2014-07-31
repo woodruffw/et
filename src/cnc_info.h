@@ -7,4 +7,4 @@
 #define IRC_SERVER "irc.woodruffw.us"
 #define IRC_PORT 6667
 #define IRC_CHANNEL "#et"
-#define IRC_REPORT "reporting in."
+#define IRC_REPORT "phoning home"

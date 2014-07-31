@@ -6,6 +6,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <sys/utsname.h>
 
 void et_main_loop(int socket)
 {
@@ -31,11 +32,12 @@ void et_main_loop(int socket)
 
 			if (!strcmp(message, "quit"))
 			{
-				break;
+				break; /* back to main@et_nix.c */
 			}
 			else if (!strcmp(message, "info"))
 			{
-				// get system information here
+				struct utsname sys_info;
+				uname(&sys_info);
 			}
 			else
 			{
