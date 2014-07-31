@@ -2,7 +2,7 @@ all:
 	@echo 'dummy'
 
 nix:
-	gcc -o ./et ./src/nix/et_nix.c ./src/gen_nick.c ./src/et_main_loop.c
+	gcc -o ./et ./src/nix/et_nix.c ./src/nix/et_main_loop.c ./src/gen_nick.c 
 
 win:
 	@echo 'dummy'
