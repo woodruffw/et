@@ -13,4 +13,3 @@
 #define IRC_REPORT "phoning home"
 
 #endif /* CNC_H */
-	
