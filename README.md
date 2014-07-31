@@ -8,6 +8,20 @@ When activated, it "phones home" and awaits instructions from members of an IRC 
 
 It can be instructed to retrieve system information and execute commands, among other things.
 
+### Compilation
+
+On *nix systems (Linux, BSD, OS X):
+```bash
+$ git clone https://github.com/woodruffw/et && cd et
+$ make nix
+```
+Do not actually run the resulting `et` binary, as it *WILL* connect you to the default server and open your computer to attack.
+
+The Windows version is incomplete.
+
+### Proof of Concept
+The original PoC Python script can be found under `src/poc/et.py`. Like the actual version, it does work and *WILL* expose your machine.
+
 ### Theoretical Limits
 Because the IRC protocol limits nicks to 9 characters, only so many `et`s can operate within a single channel.
 
