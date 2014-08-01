@@ -24,6 +24,14 @@ Download the tarball, extract it somewhere, and run `mingw32-make` inside of tha
 
 *IMPORTANT*: Do not actually run the resulting `et` binary, as it *WILL* connect you to the default server and open your computer to attack.
 
+### Configuration
+
+Many of `et`'s features can be configured in the *cnc_info.h* file under *./src*.
+
+For example, to change the IRC server `et` reports to, set `IRC_SERVER` to a server of your choice.
+
+Any changes made require recompilation.
+
 ### Usage
 Controlling the `et` bots from the IRC server is very simple.
 
@@ -32,20 +40,33 @@ When each bot connects, it sends out a channel-wide message of the format:
 et#######: et####### phoning home
 ```
 
-From that point on, the bot is ready to receive commands. All commands are executed by `/bin/sh -c` expect for quit and info, which are defined to kill the bot and report `uname(3)` output respectively.
+From that point on, the bot is ready to receive commands. There are four built-in commands:
+* `auth <password>` - Requests authorization to control the bot. If the password matches `IRC_AUTH` in *cnc_info.h*, authorization is granted.
+* `deauth` - Deauthorizes control of the bot unconditionally. Once deauthorized, the bot may not execute any command but `auth`.
+* `info` - Outputs a digest of system information. Supplied by `uname(3)` on Unix and Linux and `GetVersionEx` on Windows.
+* `quit` - Disconnects the bot from the IRC server. Unless scheduled otherwise on the system, the bot will never reconnect.
+
+Aside from these four commands, all other commands passed to an `et` are passed directly to `popen(3)` (`_popen()` on Windows).
+
+By default `deauth`, `info`, `quit`, and all other commands are restricted until the bot is authorized with `auth`.
 
 Some examples, all from the IRC prompt:
 ```
 et#######: et####### phoning home
+/msg et####### auth et-phone-home
+et#######: Successfully authorized. et####### listening.
 /msg et####### info
+et#######: some information
 /msg et####### pwd
+et#######: the current working directory
 /msg et####### quit
+*et####### has quit ()
 ```
 
 Currently, output from system commands is limited to approximately 512 characters. 
 
 ### Proof of Concept
-The original PoC Python script can be found under `src/poc/et.py`. Like the actual version, it does work and *WILL* expose your machine.
+The original PoC Python script can be found under *./src/poc/et.py*. Like the actual version, it does work and *WILL* expose your machine.
 
 ### Theoretical Limits
 Because the IRC protocol limits nicks to 9 characters, only so many `et`s can operate within a single channel.

