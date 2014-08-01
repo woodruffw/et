@@ -46,7 +46,6 @@ void et_main_loop_nix(int socket, char *nick)
 				if (!strcmp(cmd, IRC_AUTH))
 				{
 					auth = true;
-					
 					snprintf(auth_message, 256, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
 					send(socket, auth_message, strlen(auth_message), 0);
 				}
