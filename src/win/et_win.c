@@ -49,14 +49,14 @@ int main(int argc, char **argv)
 	sprintf(mesg_str, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
 	char *quit = "QUIT";
 
-	send(sock, nick_str, (int) strlen(nick_str), 0);
-	send(sock, user_str, (int) strlen(user_str), 0);
-	send(sock, join_str, (int) strlen(join_str), 0);
-	send(sock, mesg_str, (int) strlen(mesg_str), 0);
+	send(sock, nick_str, strlen(nick_str), 0);
+	send(sock, user_str, strlen(user_str), 0);
+	send(sock, join_str, strlen(join_str), 0);
+	send(sock, mesg_str, strlen(mesg_str), 0);
 
 	et_main_loop_win(sock, nick);
 
-	send(sock, quit, (int) strlen(quit), 0);
+	send(sock, quit, strlen(quit), 0);
 	closesocket(sock);
 	WSACleanup();
 
