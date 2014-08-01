@@ -76,7 +76,8 @@ Furthermore, because I got lazy with the Windows version, the ID on Windows mach
 Of course, because the trailing numbers are pseudorandom and not sequential, the actual point of collision is likely to be much lower than 10 million (or 8,388,609 for that matter).
 On the other hand, `et` can be configured to "phone home" to other servers and channels, making the limit less relevant in practice.
 
-### Status
-`et` is currently a work in progress and is not fully complete.
-
-Many of its features are currently missing.
+### TODO
+* Limit message output to 510 characters (+ CR-LF) as per RFC 2812
+* Prevent Windows CMD popups
+* Replace Windows `sprintf` calls with something safer
+* Add more built-in commands
