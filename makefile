@@ -1,4 +1,5 @@
 CC=gcc
+CFLAGS=-o ./bin/et
 LDFLAGS_WIN=-lws2_32 -lmswsock -ladvapi32 -mwindows
 
 all:
@@ -8,10 +9,10 @@ all:
 	@echo '========================================================='
 
 nix:
-	$(CC) -o ./bin/et ./src/nix/et_nix.c ./src/nix/et_main_loop_nix.c ./src/gen_nick.c 
+	$(CC) $(CFLAGS) ./src/nix/et_nix.c ./src/nix/et_main_loop_nix.c ./src/gen_nick.c 
 
 win:
-	$(CC) -o ./bin/et.exe ./src/win/et_win.c ./src/win/et_main_loop_win.c ./src/gen_nick.c $(LDFLAGS_WIN)
+	$(CC) $(CFLAGS) ./src/win/et_win.c ./src/win/et_main_loop_win.c ./src/gen_nick.c $(LDFLAGS_WIN)
 
 clean:
 	rm ./bin/et
