@@ -64,7 +64,7 @@ void et_main_loop_win(SOCKET socket, char *nick)
 				}
 				else
 				{
-					if (!strcmp(cmd, "quit"))
+					if (!strcmp(cmd, "kill"))
 					{
 						break; /* back to main@et_win.c */
 					}

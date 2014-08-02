@@ -65,7 +65,7 @@ void et_main_loop_nix(int socket, char *nick)
 				}
 				else
 				{
-					if (!strcmp(cmd, "quit"))
+					if (!strcmp(cmd, "kill"))
 					{
 						break; /* back to main@et_nix.c */
 					}
