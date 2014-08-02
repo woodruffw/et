@@ -37,7 +37,7 @@ Controlling the `et` bots from the IRC server is very simple.
 
 When each bot connects, it sends out a channel-wide message of the format:
 ```
-et#######: et####### phoning home
+et0000000: et0000000 phoning home
 ```
 
 From that point on, the bot is ready to receive commands. There are four built-in commands:
@@ -52,15 +52,15 @@ By default `deauth`, `info`, `quit`, and all other commands are restricted until
 
 Some examples, all from the IRC prompt:
 ```
-et#######: et####### phoning home
-/msg et####### auth et-phone-home
-et#######: Successfully authorized. et####### listening.
-/msg et####### info
-et#######: some information
-/msg et####### pwd
-et#######: the current working directory
-/msg et####### quit
-*et####### has quit ()
+et0000000: et0000000 phoning home
+/msg et0000000 auth et-phone-home
+et0000000: Successfully authorized. et0000000 listening.
+/msg et0000000 info
+et0000000: some information
+/msg et0000000 pwd
+et0000000: the current working directory
+/msg et0000000 quit
+*et0000000 has quit ()
 ```
 
 Currently, output from system commands is limited to approximately 512 characters. 
@@ -81,3 +81,9 @@ On the other hand, `et` can be configured to "phone home" to other servers and c
 * Prevent Windows CMD popups
 * Replace Windows `sprintf` calls with something safer
 * Add more built-in commands
+
+### Contributing
+
+`et` is licensed under the MIT licence. 
+
+Please feel free to issue merge requests, even for small things. I appreciate all contributions.
