@@ -29,11 +29,13 @@ Download the tarball, extract it somewhere, and run `mingw32-make` inside of tha
 Many of `et`'s features can be configured in the *cnc_info.h* file under *./src*.
 
 For example:
-`#define IRC_SERVER "irc.example.com"`
-`#define IRC_PORT 6667`
-`#define IRC_CHANNEL "#yourchannel"`
-`#define IRC_REPORT "hello!"`
-`#define IRC_AUTH "super secret password"`
+```C
+#define IRC_SERVER "irc.example.com"
+#define IRC_PORT 6667
+#define IRC_CHANNEL "#yourchannel"
+#define IRC_REPORT "hello!"
+#define IRC_AUTH "super secret password"
+```
 
 Any changes made require recompilation.
 
