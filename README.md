@@ -84,7 +84,6 @@ On the other hand, `et` can be configured to "phone home" to other servers and c
 ### TODO
 * Limit message output to 510 characters (+ CR-LF) as per RFC 2812
 * Prevent Windows CMD popups
-* Replace Windows `sprintf` calls with something safer
 * Add more built-in commands
 
 ### Contributing
