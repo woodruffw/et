@@ -22,7 +22,7 @@ Building on Windows requries `make` and `gcc`, both of which can be obtained thr
 Download the tarball, extract it somewhere, and run `mingw32-make` inside of that directory in CMD.exe. The `et.exe` binary will be left in "bin".
 
 
-*IMPORTANT*: Do not actually run the resulting `et` binary, as it *WILL* connect you to the default server and open your computer to attack.
+*IMPORTANT*: Do not actually run the resulting `et` binary, as it *WILL* open your computer to attack.
 
 ### Configuration
 
