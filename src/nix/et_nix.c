@@ -5,7 +5,6 @@
 	Forks, connects to the IRC C&C server, checks in, then calls et_main_loop_nix.
 */
 
-#include "et_main_loop_nix.h"
 #include "../gen_nick.h"
 #include "../cnc_info.h"
 #include <stdio.h>
