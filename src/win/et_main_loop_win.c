@@ -90,6 +90,10 @@ void et_main_loop_win(SOCKET socket, char *nick)
 							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows Vista\r\n", IRC_CHANNEL);
 						#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
 							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows XP\r\n", IRC_CHANNEL);
+						#elif defined(_WIN32_WINNT_WS03)
+							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows Server 2003\r\n", IRC_CHANNEL);
+						#elif defined(_WIN32_WINNT_WS08)
+							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows Server 2008\r\n", IRC_CHANNEL);
 						#else
 							_snprintf(os, 256, "Microsoft Windows", 256);
 						#endif
