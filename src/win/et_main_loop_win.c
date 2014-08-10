@@ -77,33 +77,13 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					}
 					else if (!strcmp(cmd, "info"))
 					{
-						char os[256];
 						char kern[256];
-
-						#if defined(NTDDI_WIN7)
-							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows 7\r\n", IRC_CHANNEL);
-						#elif defined(NTDDI_WIN8)
-							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows 8\r\n", IRC_CHANNEL);
-						#elif defined(NTDDI_WINBLUE)
-							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows 8.1\r\n", IRC_CHANNEL);
-						#elif defined(NTDDI_VISTA) || defined(NTDDI_VISTASP1)
-							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows Vista\r\n", IRC_CHANNEL);
-						#elif defined(NTDDI_WINXP) || defined(NTDDI_WINXPSP1) || defined(NTDDI_WINXPSP2) || defined(NTDDI_WINXPSP3)
-							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows XP\r\n", IRC_CHANNEL);
-						#elif defined(_WIN32_WINNT_WS03)
-							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows Server 2003\r\n", IRC_CHANNEL);
-						#elif defined(_WIN32_WINNT_WS08)
-							_snprintf(os, 256, "PRIVMSG %s :OS: Microsoft Windows Server 2008\r\n", IRC_CHANNEL);
-						#else
-							_snprintf(os, 256, "Microsoft Windows", 256);
-						#endif
 
 						OSVERSIONINFO kern_info;
 						kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 						GetVersionEx(&kern_info);
 						_snprintf(kern, 256, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
-
-						send(socket, os, strlen(os), 0);
+						
 						send(socket, kern, strlen(kern), 0);
 					}
 					else
