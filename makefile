@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-o ./bin/et
+CFLAGS=-o ./bin/et -Os
 LDFLAGS_WIN=-lws2_32 -lmswsock -ladvapi32 -mwindows
 
 all:

