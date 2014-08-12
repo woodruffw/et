@@ -22,6 +22,7 @@ void et_main_loop_nix(int socket, char *nick)
 
 	while(1)
 	{
+		memset(buf, 0, 1024);
 		recv(socket, buf, 1023, 0);
 		buf[1024] = '\0';
 
