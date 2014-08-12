@@ -86,6 +86,7 @@ Of course, because the trailing numbers are pseudorandom and not sequential, the
 On the other hand, `et` can be configured to "phone home" to other servers and channels, making the limit less relevant in practice.
 
 ### TODO
+* Reduce binary size
 * Limit message output to 510 characters (+ CR-LF) as per RFC 2812
 * Prevent Windows CMD popups
 * Add more built-in commands
