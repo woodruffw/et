@@ -3,7 +3,7 @@ CCFLAGS=-o ./bin/et -Os -ffunction-sections
 CCFLAGS_WIN=
 CCFLAGS_NIX=-fdata-sections
 LDFLAGS=
-LDFLAGS_WIN=-s -lws2_32 -lmswsock -ladvapi32 -mwindows
+LDFLAGS_WIN=-s -lws2_32 -mwindows
 LDFLAGS_NIX=
 
 all:

@@ -13,6 +13,7 @@ It can be instructed to retrieve system information and execute commands, among 
 **IMPORTANT**: Many binary size reduction methods are not applied by default during *nix builds due to the wide variety of utilities/flags that provide that
 functionality on different systems. For example, standard symbol stripping (-s) is not applied because OS X no longer uses (-s) to strip symbols.
 To add your own size-optimization flags, either edit the makefile or feed them in by assigning to `LDFLAGS_NIX` while calling `make`.
+In addition, on Windows, you can try using a third-party tool like [UPX](http://upx.sourceforge.net/) to further reduce executable size.
 
 #### On *nix systems (Linux, BSD, OS X):
 ```bash
@@ -26,7 +27,7 @@ Building on Windows requries `make` and `gcc`, both of which can be obtained thr
 Download the tarball, extract it somewhere, and run `mingw32-make` inside of that directory in CMD.exe. The `et.exe` binary will be left in "bin".
 
 
-*IMPORTANT*: Do not actually run the resulting `et` binary, as it *WILL* open your computer to attack.
+**IMPORTANT**: Do not actually run the resulting `et` binary, as it *WILL* open your computer to attack.
 
 ### Configuration
 
