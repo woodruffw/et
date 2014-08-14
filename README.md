@@ -10,6 +10,10 @@ It can be instructed to retrieve system information and execute commands, among 
 
 ### Compilation
 
+**IMPORTANT**: Many binary size reduction methods are not applied by default during *nix builds due to the wide variety of utilities/flags that provide that
+functionality on different systems. For example, standard symbol stripping (-s) is not applied because OS X no longer uses (-s) to strip symbols.
+To add your own size-optimization flags, either edit the makefile or feed them in by assigning to `LDFLAGS_NIX` while calling `make`.
+
 #### On *nix systems (Linux, BSD, OS X):
 ```bash
 $ git clone https://github.com/woodruffw/et && cd et
