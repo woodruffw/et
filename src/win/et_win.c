@@ -22,10 +22,10 @@
 int main(int argc, char **argv)
 {
 	char nick[10];
-	char nick_str[256];
-	char user_str[256];
-	char join_str[256];
-	char mesg_str[256];
+	char nick_str[IRC_MSGLEN];
+	char user_str[IRC_MSGLEN];
+	char join_str[IRC_MSGLEN];
+	char mesg_str[IRC_MSGLEN];
 
 	WSADATA wsa_data;
 	SOCKET sock;
@@ -43,10 +43,10 @@ int main(int argc, char **argv)
 	connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_in));
 
 	gen_nick(nick);
-	sprintf(nick_str, "NICK %s\r\n", nick);
-	sprintf(user_str, "USER %s 0 * :et phone home\r\n", nick);
-	sprintf(join_str, "JOIN :%s\r\n", IRC_CHANNEL);
-	sprintf(mesg_str, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
+	_snprintf(nick_str, IRC_MSGLEN, "NICK %s\r\n", nick);
+	_snprintf(user_str, IRC_MSGLEN, "USER %s 0 * :et phone home\r\n", nick);
+	_snprintf(join_str, IRC_MSGLEN, "JOIN :%s\r\n", IRC_CHANNEL);
+	_snprintf(mesg_str, IRC_MSGLEN, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
 	char *quit = "QUIT";
 
 	send(sock, nick_str, strlen(nick_str), 0);

