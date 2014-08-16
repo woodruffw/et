@@ -7,6 +7,6 @@
 #ifndef GEN_NICK_H
 #define GEN_NICK_H
 
-void gen_nick(char *nick);
+void gen_nick(char nick[10]);
 
 #endif /* GEN_NICK_H */
