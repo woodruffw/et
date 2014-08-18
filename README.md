@@ -55,7 +55,7 @@ et0000000: et0000000 phoning home
 From that point on, the bot is ready to receive commands. There are a few built-in commands:
 * `auth <password>` - Requests authorization to control the bot. If the password matches `IRC_AUTH` in *cnc_info.h*, authorization is granted.
 * `deauth` - Deauthorizes control of the bot unconditionally. Once deauthorized, the bot may not execute any command but `auth`.
-* `info` - Outputs a digest of system information. Supplied by `uname(3)` on Unix and Linux and `GetVersionEx` on Windows.
+* `info` - Outputs a digest of system information. Supplied by `uname(3)` on Unix and Linux and `GetVersionEx`/`GetUserName` on Windows.
 * `popup <message>` - **CURRENTLY WINDOWS ONLY**. Display a popup message on the client's screen.
 * `persist` - **CURRENTLY WINDOWS ONLY**. Ensures that the `et` executable, if killed, will restart on the next login. 
 * `depersist` - **CURRENTLY WINDOWS ONLY**. Does the opposite of `persist`, removing `et`'s persistence after logout.
