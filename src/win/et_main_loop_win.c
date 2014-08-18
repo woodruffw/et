@@ -121,7 +121,7 @@ void et_main_loop_win(SOCKET socket, char *nick)
 						RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &key);
 						
 						RegDeleteValue(key, "et");
-						RegDeleteKeyEx(key, "et", KEY_WOW64_32KEY, 0);
+						RegDeleteKey(key, "et");
 						RegCloseKey(key);
 						_snprintf(depersist_message, IRC_MSGLEN, "PRIVMSG %s :Successfully removed registry key.\r\n", IRC_CHANNEL);
 
