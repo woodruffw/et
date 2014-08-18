@@ -58,6 +58,7 @@ From that point on, the bot is ready to receive commands. There are a few built-
 * `info` - Outputs a digest of system information. Supplied by `uname(3)` on Unix and Linux and `GetVersionEx` on Windows.
 * `popup <message>` - **CURRENTLY WINDOWS ONLY**. Display a popup message on the client's screen.
 * `persist` - **CURRENTLY WINDOWS ONLY**. Ensures that the `et` executable, if killed, will restart on the next login. 
+* `depersist` - **CURRENTLY WINDOWS ONLY**. Does the opposite of `persist`, removing `et`'s persistence after logout.
 * `kill` - Disconnects the bot from the IRC server. Unless scheduled otherwise on the system, the bot will never reconnect.
 
 Aside from these four commands, all other commands passed to an `et` are passed directly to `popen(3)` (`_popen()` on Windows).

