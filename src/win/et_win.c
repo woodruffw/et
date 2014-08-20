@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 	_snprintf(user_str, IRC_MSGLEN, "USER %s 0 * :et phone home\r\n", nick);
 	_snprintf(join_str, IRC_MSGLEN, "JOIN :%s\r\n", IRC_CHANNEL);
 	_snprintf(mesg_str, IRC_MSGLEN, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
-	char *quit = "QUIT";
+	const char *quit = "QUIT";
 
 	send(sock, nick_str, strlen(nick_str), 0);
 	send(sock, user_str, strlen(user_str), 0);
