@@ -1,5 +1,5 @@
 CC=gcc
-CCFLAGS=-o ./bin/et -Os -ffunction-sections 
+CCFLAGS=-o ./bin/et -Os -ffunction-sections -std=gnu89
 CCFLAGS_WIN=
 CCFLAGS_NIX=-fdata-sections
 LDFLAGS=

