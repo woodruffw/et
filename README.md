@@ -94,9 +94,9 @@ On the other hand, `et` can be configured to "phone home" to other servers and c
 
 ### TODO
 * Reduce binary size
-* Limit message output to 510 characters (+ CR-LF) as per RFC 2812
 * Prevent Windows CMD popups
 * Add more built-in commands
+* Fix PING/PONG bug
 
 ### Contributing
 
