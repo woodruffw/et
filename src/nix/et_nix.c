@@ -25,11 +25,9 @@ int main(int argc, char **argv[])
 
 	if (!child)
 	{
+		const char *quit = "QUIT";
 		char nick[10];
-		char nick_str[IRC_MSGLEN];
-		char user_str[IRC_MSGLEN];
-		char join_str[IRC_MSGLEN];
-		char mesg_str[IRC_MSGLEN];
+		char message[IRC_MSGLEN];
 
 		int sock;
 		struct sockaddr_in server;
@@ -46,17 +44,19 @@ int main(int argc, char **argv[])
 		connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_in));
 
 		gen_nick(nick);
-		snprintf(nick_str, IRC_MSGLEN, "NICK %s\r\n", nick);
-		snprintf(user_str, IRC_MSGLEN, "USER %s 0 * :et phone home\r\n", nick);
-		snprintf(join_str, IRC_MSGLEN, "JOIN :%s\r\n", IRC_CHANNEL);
-		snprintf(mesg_str, IRC_MSGLEN, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
-		const char *quit = "QUIT";
-
-		send(sock, nick_str, strlen(nick_str), 0);
-		send(sock, user_str, strlen(user_str), 0);
-		send(sock, join_str, strlen(join_str), 0);
-		send(sock, mesg_str, strlen(mesg_str), 0);
-
+		snprintf(message, IRC_MSGLEN, "NICK %s\r\n", nick);
+		send(sock, message, strlen(message), 0);
+		memset(message, 0, IRC_MSGLEN);
+		snprintf(message, IRC_MSGLEN, "USER %s 0 * :et phone home\r\n", nick);
+		send(sock, message, strlen(message), 0);
+		memset(message, 0, IRC_MSGLEN);
+		snprintf(message, IRC_MSGLEN, "JOIN :%s\r\n", IRC_CHANNEL);
+		send(sock, message, strlen(message), 0);
+		memset(message, 0, IRC_MSGLEN);
+		snprintf(message, IRC_MSGLEN, "PRIVMSG %s :%s %s\r\n", IRC_CHANNEL, nick, IRC_REPORT);
+		send(sock, message, strlen(message), 0);
+		memset(message, 0, IRC_MSGLEN);
+		
 		et_main_loop_nix(sock, nick);
 
 		send(sock, quit, strlen(quit), 0);

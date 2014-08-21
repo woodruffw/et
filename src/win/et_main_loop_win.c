@@ -31,7 +31,7 @@ void et_main_loop_win(SOCKET socket, char *nick)
 		if ((ping = strstr(buf, "PING")) && !(strstr(buf, "CASEMAPPING")))
 		{
 			char *pong = strtok(ping, "\r\n");
-			strncpy(pong, "PONG", 4);
+			strncpy(pong, "PONG", 6);
 			send(socket, pong, strlen(pong), 0);
 		}
 		else if (strstr(buf, "PRIVMSG") && strstr(buf, nick))
