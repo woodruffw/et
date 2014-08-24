@@ -79,7 +79,11 @@ et0000000: [the current working directory]
 *et0000000 has quit ()
 ```
 
-Currently, output from system commands is limited to approximately 512 characters. 
+Currently, output from system commands is limited to approximately 512 characters. For more information on IRC's limitations, read [RFC 2812](http://tools.ietf.org/rfc/rfc2812.txt).
+
+**IMPORTANT**: Because I tested `et` with ngIRCd, I made a few assumptions about common server characteristics. For example, `et` will always respond to a `PING` with
+a `PONG` message containing the server's name, simply because that's the most common `PING`/`PONG` message. If you encounter timeout issues, it's probably because your IRC server
+sends a different `PING` message.
 
 ### Proof of Concept
 The original PoC Python script can be found under *./src/poc/et.py*. Like the actual version, it does work and *WILL* expose your machine.
@@ -96,7 +100,6 @@ On the other hand, `et` can be configured to "phone home" to other servers and c
 * Reduce binary size
 * Prevent Windows CMD popups
 * Add more built-in commands
-* Fix PING/PONG bug
 
 ### Contributing
 

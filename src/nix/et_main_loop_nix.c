@@ -31,9 +31,8 @@ void et_main_loop_nix(int socket, char *nick)
 		char *ping;
 		if ((ping = strstr(buf, "PING")) && !(strstr(buf, "CASEMAPPING")))
 		{
-			char *pong = strtok(ping, "\r\n");
-			strncpy(pong, "PONG", 4);
-			send(socket, pong, strlen(pong), 0);
+			snprintf(message, IRC_MSGLEN, "PONG :%s\r\n", IRC_SERVER);
+			send(socket, message, strlen(message), 0);
 		}
 		else if (strstr(buf, "PRIVMSG") && strstr(buf, nick))
 		{
